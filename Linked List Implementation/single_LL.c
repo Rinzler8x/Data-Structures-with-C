@@ -29,6 +29,30 @@ void insert_begin()
     }
 }
 
+void insert_specific(int pos)
+{
+    struct node *newnode = (struct node *)malloc(sizeof(struct node));
+    struct node *temp = head;
+
+    if(newnode == NULL)
+        printf("Memory not allocated\n");
+    else{
+        printf("Enter value: ");
+        scanf("%d", &newnode->data);
+        newnode->next = NULL;
+        if(head == NULL)
+            head = newnode;
+        else{
+            for(int i = 1; i < pos - 1; i++){
+                temp = temp->next;
+            }
+            newnode->next = temp->next;
+            temp->next = newnode;
+        }
+        printf("Value entered\n");
+    }
+}
+
 void insert_end()
 {
     struct node *newnode = (struct node * )malloc(sizeof(struct node));
@@ -71,6 +95,27 @@ void delete_begin()
     }
 }
 
+void deletion_specific(int pos)
+{
+    struct node *temp = head;
+    struct node *ptr;
+
+    if(head == NULL)
+        printf("List empty\n");
+    else{
+        if(head->next == NULL)
+            head = NULL;
+        else{
+            for(int i = 1; i < pos; i++){
+                ptr = temp;
+                temp = temp->next;
+            }
+            ptr->next = temp->next;
+        }
+        free(temp);
+    }
+}
+
 void delete_end()
 {
     struct node *temp = head;
@@ -93,10 +138,27 @@ void delete_end()
     }
 }
 
+void display()
+{
+    struct node *temp = head;
+
+    if(head == NULL)
+        printf("List empty\n");
+    else{
+        printf("Linked list: ");
+        while(temp != NULL){
+            printf("%d ", temp->data);
+            temp = temp->next;
+        }
+        printf("\n");
+    }
+}
+
 int main()
 {
 	int cho;
-	printf("Menu\n1.Push\n2.Pop\n3.Peek\n4.Display\n5.Exit\n");
+    int pos;
+	printf("Menu\n1.Insertion At Beginning\n2.Insertion At Specific\n3.Insertion At End\n4.Deletion At Beginning\n5.Deletion At Specific\n6.Deletion At End\n7.Display\n8.Exit");
 	do
 	{
 		printf("\nEnter your choice: ");
@@ -106,29 +168,45 @@ int main()
 		switch (cho)
 		{
 		case 1:
-			push();
+			insert_begin();
 			break;
 
 		case 2:
-			pop();
+			printf("Enter position to insert: ");
+            scanf("%d", &pos);
+            insert_specific(pos);
 			break;
 
 		case 3:
-			peek();
+			insert_end();
 			break;
 
 		case 4:
-			display();
+			delete_begin();
 			break;
 
 		case 5:
-			printf("Program Exited\n");
-			cho = 0;
+			printf("Enter position to delete: ");
+            scanf("%d", &pos);
+            deletion_specific(pos);
 			break;
 
-		default:
-			printf("Invalid Input\n");
-			break;
+		case 6:
+            delete_end();
+            break;
+
+        case 7:
+            display();
+            break;
+
+        case 8:
+            printf("Program exited\n");
+            cho = 0;
+            break;
+
+        case 9:
+            printf("Invalid Input\n");
+            break;
 		}
 	} while (cho != 0);
 	return 0;
